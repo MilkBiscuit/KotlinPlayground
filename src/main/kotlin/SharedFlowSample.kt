@@ -2,9 +2,23 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.math.BigInteger
 
+
+fun fibonacci(): Flow<BigInteger> = flow {
+    var x = BigInteger.ZERO
+    var y = BigInteger.ONE
+    while (true) {
+        emit(x)
+        x = y.also {
+            y += x
+        }
+    }
+}
 
 suspend fun main() {
+    fibonacci().take(100).collect { println(it) }
+
     val mutableFlow = MutableSharedFlow<Int>(replay = 0)
     val flow: SharedFlow<Int> = mutableFlow.asSharedFlow()
 
