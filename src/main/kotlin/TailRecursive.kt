@@ -33,11 +33,11 @@ fun main() {
 
     timeCost {
         val result = fibonacciTail(50u)
-        println("The result is $result")
+        println("The result of fibonacciTail is $result")
     }
 
     timeCost {
         val result = fibonacciRecursive(50u)
-        println("The result is $result")
+        println("The result of fibonacciRecursive is $result")
     }
 }
