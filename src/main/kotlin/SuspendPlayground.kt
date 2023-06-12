@@ -1,4 +1,5 @@
 import kotlinx.coroutines.*
+import java.lang.IllegalStateException
 
 
 private suspend fun doSomethingSlow() {
@@ -22,9 +23,17 @@ private suspend fun anotherThing() {
 
 private fun somethingInfinite(scope: CoroutineScope): Job {
     return scope.launch {
-        for (index in 0 until 50) {
-            delay(200L)
-            println("I'm doing something. $index")
+        try {
+            for (index in 0 until 50) {
+                delay(200L)
+                println("I'm doing something. $index")
+            }
+        } catch (e: CancellationException) {
+            println("Infinite job got cancelled.")
+        } finally {
+            println("Calling another suspend after cancelled is not allowed.")
+            delay(10L)
+            println("Infinite job completed anyway.")
         }
     }
 }
