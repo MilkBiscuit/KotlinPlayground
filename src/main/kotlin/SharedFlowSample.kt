@@ -1,4 +1,5 @@
 import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import java.math.BigInteger
 
@@ -14,7 +15,10 @@ private fun fibonacci(): Flow<BigInteger> = flow {
     }
 }
 
-private val mutableSharedFlow: MutableSharedFlow<Int> = MutableSharedFlow<Int>()
+private val mutableSharedFlow: MutableSharedFlow<Int> = MutableSharedFlow<Int>(
+    extraBufferCapacity = 1,
+    onBufferOverflow = BufferOverflow.DROP_OLDEST,
+)
 private val flow: SharedFlow<Int> = mutableSharedFlow.asSharedFlow()
 
 fun main() {
