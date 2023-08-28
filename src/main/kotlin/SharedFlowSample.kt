@@ -1,11 +1,9 @@
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.math.BigInteger
 
 
-fun fibonacci(): Flow<BigInteger> = flow {
+private fun fibonacci(): Flow<BigInteger> = flow {
     var x = BigInteger.ZERO
     var y = BigInteger.ONE
     while (true) {
@@ -16,23 +14,26 @@ fun fibonacci(): Flow<BigInteger> = flow {
     }
 }
 
-val mutableSharedFlow: MutableSharedFlow<Int> = MutableSharedFlow<Int>()
-val flow: SharedFlow<Int> = mutableSharedFlow.asSharedFlow()
+private val mutableSharedFlow: MutableSharedFlow<Int> = MutableSharedFlow<Int>()
+private val flow: SharedFlow<Int> = mutableSharedFlow.asSharedFlow()
 
 fun main() {
 //    fibonacci().take(100).collect { println(it) }
 
-    runBlocking {
-        launch {
-            flow.collect {
-                delay(100)
-                println("received num: $it")
-            }
+    CoroutineScope(Dispatchers.IO).launch {
+        println("runBlocking start")
+        flow.collect {
+            println("received num: $it")
         }
+        println("runBlocking end")
     }
 
-    mutableSharedFlow.tryEmit(1)
-    mutableSharedFlow.tryEmit(2)
-    mutableSharedFlow.tryEmit(3)
-    mutableSharedFlow.tryEmit(4)
+    var emitResult = mutableSharedFlow.tryEmit(1)
+    println("emit success: $emitResult")
+    emitResult = mutableSharedFlow.tryEmit(2)
+    println("emit success: $emitResult")
+    emitResult = mutableSharedFlow.tryEmit(3)
+    println("emit success: $emitResult")
+    emitResult = mutableSharedFlow.tryEmit(4)
+    println("emit success: $emitResult")
 }
