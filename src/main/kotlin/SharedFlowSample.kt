@@ -25,12 +25,13 @@ fun main() {
 //    fibonacci().take(100).collect { println(it) }
 
     CoroutineScope(Dispatchers.IO).launch {
-        println("runBlocking start")
+        println("Flow collect start")
         flow.collect {
             println("received num: $it")
         }
-        println("runBlocking end")
+        println("Launch end")
     }
+    Thread.sleep(10)
 
     var emitResult = mutableSharedFlow.tryEmit(1)
     println("emit success: $emitResult")
