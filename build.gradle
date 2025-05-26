@@ -1,7 +1,7 @@
 plugins {
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.6.10'
     id 'application'
-    id 'org.jetbrains.kotlin.jvm' version '1.9.0'
+    id 'org.jetbrains.kotlin.jvm' version '1.9.20'
 }
 
 group = 'com.cheng'
@@ -23,11 +23,11 @@ test {
 }
 
 compileKotlin {
-    kotlinOptions.jvmTarget = '17'
+    kotlinOptions.jvmTarget = '21'
 }
 
 compileTestKotlin {
-    kotlinOptions.jvmTarget = '17'
+    kotlinOptions.jvmTarget = '21'
 }
 
 application {
